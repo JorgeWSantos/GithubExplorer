@@ -1,5 +1,5 @@
 import React, {useState, FormEvent} from 'react';
-import { Title, Form, Repositories } from './styles';
+import { Title, Form, Repositories, Error } from './styles';
 import { FiChevronRight } from 'react-icons/fi';
 import logoImg from '../../assets/img/logo.svg';
 import api from '../../services/api';
@@ -16,16 +16,26 @@ interface Repository {
 const Dashboard: React.FC = () => {
 
     const [repositories, setRepositories] = useState<Repository[]>([]);
+    const [inputError, setInputError] = useState('');
     const [newRepo, setNewRepo] = useState('');
 
     async function handleAddRepository(event: FormEvent<HTMLFormElement>): Promise<void>{
-        console.log(newRepo);
         event.preventDefault();
 
-        const response = await api.get<Repository>(`repos/${newRepo}`);
+        if (!newRepo) {
+            setInputError('Digite o autor/nome do repositório.');
+            return;
+        }
 
-        setRepositories([...repositories,response.data]);
-        setNewRepo('');
+        try {
+            const response = await api.get<Repository>(`repos/${newRepo}`);
+
+            setRepositories([...repositories,response.data]);
+            setNewRepo('');
+            setInputError('');
+        } catch (error) {
+            setInputError('Erro na busca por esse repositório.');
+        }
     }
 
     return (
@@ -33,7 +43,7 @@ const Dashboard: React.FC = () => {
             <img src={logoImg} alt="Github Explorer"/>
             <Title>Explore Repositórios no Github</Title>
 
-            <Form action="" onSubmit={handleAddRepository}>
+            <Form hasError={!!inputError} action="" onSubmit={handleAddRepository}>
                 <input 
                     value={newRepo}
                     placeholder="Digite o nome do repositório"
@@ -41,10 +51,11 @@ const Dashboard: React.FC = () => {
                 />
                 <button type="submit">Pesquisar</button>
             </Form>
-
+            
+            { inputError && <Error>{inputError}</Error> }
             <Repositories>
                 {repositories.map(repository => (
-                    <a href="#">
+                    <a href="teste">
                     <img 
                     src={repository.owner.avatar_url} 
                     alt={repository.owner.login}
