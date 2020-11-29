@@ -45,4 +45,59 @@ export const Form = styled.form`
 
 
 export const Repositories = styled.div`
+    display:flex;
+    flex-direction: column;
+    max-width: 714px;
+    margin-top: 80px;
+
+
+    a{
+        background: #fff;
+        border-radius: 5px;
+        width: 100%;
+        padding: 15px;
+        text-decoration: none;
+
+        display: flex;
+        align-items: center;
+        transition: 0.2s;
+        
+        &:hover{
+            transform: translate(10px);
+            /* font: 16px Roboto, sans-serif; */
+        }
+
+        & + a {
+            margin-top: 16px;
+        }
+
+
+        img{
+            max-width: 83px;
+            max-height: 83px;
+            border-radius: 50%;
+        }
+
+        div{
+            margin: 0 16px;
+            flex: 1;
+            margin-left: 20px;
+
+            strong{
+                font-size: 20px;
+                color: #3D3D4D;
+            }
+
+            p{
+                font-size:18px;
+                color: #A8A8B3;
+            }
+        }
+
+        svg {
+            margin-left: auto;
+            color: #C9C9D4;
+        }
+    }
+    
 `;
